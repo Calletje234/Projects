@@ -2,6 +2,9 @@ from tkinter import *
 from tkinter import filedialog
 from PIL import ImageTk, Image
 
+from RobotFramework_tool.Robotframework_tool.GUI import Advanced_screen
+
+
 class main_screen():
     root = Tk()
     root.title("RoboFrame")
@@ -26,6 +29,7 @@ class main_screen():
     #initialize all buttons variables
     change_python_bttn = ""
     change_rf_bttn = ""
+    adv_opt_bttn = ""
     cancel = ""
     run = ""
 
@@ -65,6 +69,9 @@ class main_screen():
         
         self.change_python_bttn.grid(row=0,column=3,padx=10,pady=10)
         self.change_rf_bttn.grid(row=1,column=3)
+        self.adv_opt_bttn.grid(row=12,column=1,padx=10)
+        self.run.grid(row=12,column=2,padx=10)
+        self.cancel.grid(row=12,column=3, padx=10)
 
         #Set Entry Collums
         self.folder_python.grid(row=0,column=0)
@@ -90,8 +97,11 @@ class main_screen():
     def create_buttons(self):
         self.change_python_bttn = Button(self.set_paths, text="...", height=1,width=2, state=NORMAL, command=lambda : self.filepicker("pyt"))
         self.change_rf_bttn = Button(self.set_paths, text="...", height=1, width=2, state=NORMAL, command=lambda : self.filepicker("rf"))
-        self.cancel = Button(self.bottum_btn, text="cancel", width=10).grid(row=12,column=0, padx=10)
-        self.run = Button(self.bottum_btn, text="run", width=10).grid(row=12,column=1,padx=10)
+        #command : lambda function doens't work yet
+        self.adv_opt_bttn = Button(self.bottum_btn, text="Advanced", command=lambda : Advanced_screen.construct_advance_options_screen(), width=10)
+        #-----------------------------------------------------------------------------------------------------------------------------------------#
+        self.cancel = Button(self.bottum_btn, text="Cancel", width=10)
+        self.run = Button(self.bottum_btn, text="Run", width=10)
 
     def filepicker(self, pyt):
         if pyt == "pyt":
@@ -120,12 +130,12 @@ class main_screen():
 
     def setup_frames(self):
         bottum_btn = Frame(self.root)
-        bottum_btn.grid(row=3)
+        bottum_btn.grid(row=3, column=0)
 
-        set_paths = LabelFrame(self.root, text="set Path", padx=10, pady=10)
+        set_paths = LabelFrame(self.root, text="Set Path", padx=10, pady=10)
         options = LabelFrame(self.root, text="Options", padx=10, pady=10)
-        set_paths.grid(row=0, column=1)
-        options.grid(row=1, column=1)
+        set_paths.grid(row=0, column=0)
+        options.grid(row=1, column=0)
         self.set_paths = set_paths
         self.options = options
         
