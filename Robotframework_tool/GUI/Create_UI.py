@@ -49,7 +49,7 @@ class main_screen():
                                          command=lambda: self.filepicker("p"))
         self.change_robot_bttn = Button(self.set_paths, text="...", height=1, width=2,
                                         command=lambda: self.filepicker("r"))
-        self.cancel = Button(self.buttons, text="Cancel", width=10)
+        self.cancel = Button(self.buttons, text="Cancel", width=10, command=lambda : root.destroy())
         self.run = Button(self.buttons, text="Run", width=10)
         self.advanced = Button(self.buttons, text="Advanced", width=10,
                                command=lambda : Advanced_options(self.master))
@@ -162,26 +162,44 @@ class Advanced_options():
         self.window.geometry("650x650")
         self.create_frame()
         self.create_date_picker()
+        self.create_checkboxes()
+        self.create_input_fields()
 
+    def create_checkboxes(self):
+        self.date_checkvar = IntVar()
+        self.date_check = Checkbutton(self.top, text="Plan the run", variable=self.date_checkvar,
+                                      command=lambda : self.check_tag("date"))
+        self.date_check.grid(row=0, column=0)
 
     def create_frame(self):
-        self.top = LabelFrame(text="Date Picker")
-        self.bottum = LabelFrame(text="")
+        self.top = LabelFrame(self.window, text="Plan a Run")
+        self.bottum = LabelFrame(self.window, text="")
+        self.date_picker = LabelFrame(self.top, text="Date Picker")
+        self.time = LabelFrame(self.top, text="Time Picker")
 
         self.top.grid(row=0, column=0, padx=10)
         self.bottum.grid(row=1, column=0)
+        self.date_picker.grid(row=1, column=0, padx=10)
+        self.time.grid(row=1, column=1, padx=10, pady=10)
+
+    def create_input_fields(self):
+        self.time_checkvar = IntVar()
+        self.time_picker = Entry(self.time, state=DISABLED)
+        self.time_picker.grid(row=0, column=0, padx=5, pady=5)
+
+    def check_tag(self, tag):
+        if tag == "date" and self.date_checkvar.get() == 1:
+            self.cal.config(state=NORMAL)
+            self.time_picker.config(state=NORMAL)
+        elif tag == "date" and self.date_checkvar.get() == 0:
+            self.cal.config(state=DISABLED)
+            self.time_picker.config(state=DISABLED)
 
     def create_date_picker(self):
+        self.cal = DateEntry(self.date_picker, width=12, state=DISABLED)
+        self.cal.grid(row=1, column=0, padx=5,pady=5)
 
-
-
-
-
-
-
-
-
-
-root = Tk()
-app = main_screen(root)
-root.mainloop()
+if __name__ == "__main__":
+    root = Tk()
+    app = main_screen(root)
+    root.mainloop()
