@@ -1,11 +1,11 @@
 from tkinter import *
 from tkinter import filedialog
-from PIL import ImageTk, Image
-
-from tkcalendar import Calendar, DateEntry
-from datetime import date
+from tkcalendar import DateEntry
+from Robotframework_tool.src import constructor
 
 class main_screen():
+
+
     def __init__(self, master):
         self.master = master
         self.master.title("Roboframe")
@@ -26,14 +26,21 @@ class main_screen():
     def create_entries(self):
         python_path = StringVar(self.set_paths, "C:/Python37/python.exe")
         robot_path = StringVar(self.set_paths, "C:/ws/cmge.automation/RobotFrameworkCMGE")
+        self.t_inc = StringVar(self.options)
+        self.t_exc = StringVar(self.options)
+        self.tst_include = StringVar(self.options)
+        self.tst_exclude = StringVar(self.options)
+        self.suite_inc = StringVar(self.options)
+        self.suite_exc = StringVar(self.options)
+
         self.set_path_python = Entry(self.set_paths, width=60, textvariable=python_path)
         self.set_path_robot = Entry(self.set_paths, width=60, textvariable=robot_path)
-        self.tags_inc_ent = Entry(self.options, width=80, state=DISABLED)
-        self.tags_exc_ent = Entry(self.options, width=80, state=DISABLED)
-        self.tst_inc_ent = Entry(self.options, width=80, state=DISABLED)
-        self.tst_exc_ent = Entry(self.options, width=80, state=DISABLED)
-        self.st_inc_ent = Entry(self.options, width=80, state=DISABLED)
-        self.st_exc_ent = Entry(self.options, width=80, state=DISABLED)
+        self.tags_inc_ent = Entry(self.options, width=80, state=DISABLED, textvariable=self.t_inc)
+        self.tags_exc_ent = Entry(self.options, width=80, state=DISABLED, textvariable=self.t_exc)
+        self.tst_inc_ent = Entry(self.options, width=80, state=DISABLED, textvariable=self.tst_include)
+        self.tst_exc_ent = Entry(self.options, width=80, state=DISABLED, textvariable=self.tst_exclude)
+        self.st_inc_ent = Entry(self.options, width=80, state=DISABLED, textvariable=self.suite_inc)
+        self.st_exc_ent = Entry(self.options, width=80, state=DISABLED, textvariable=self.suite_exc)
 
         self.set_path_python.grid(row=0, column=0)
         self.set_path_robot.grid(row=1, column=0)
@@ -50,7 +57,7 @@ class main_screen():
         self.change_robot_bttn = Button(self.set_paths, text="...", height=1, width=2,
                                         command=lambda: self.filepicker("r"))
         self.cancel = Button(self.buttons, text="Cancel", width=10, command=lambda : root.destroy())
-        self.run = Button(self.buttons, text="Run", width=10)
+        self.run = Button(self.buttons, text="Run", width=10, command=lambda : constructor.construct())
         self.advanced = Button(self.buttons, text="Advanced", width=10,
                                command=lambda : Advanced_options(self.master))
 
@@ -155,6 +162,22 @@ class main_screen():
             self.set_path_robot.delete(0, END)
             self.set_path_robot.insert(0, v)
 
+    def tag_state(self):
+        if self.tag_inc['state'] == NORMAL:
+            v1 = self.t_inc.get()
+            v2 = "Empty"
+        elif self.tag_exc['state'] == NORMAL:
+            v1 = self.t_exc.get()
+            v2 = "Empty"
+        elif self.tag_exc['state'] == NORMAL and self.tag_inc['state'] == NORMAL:
+            v1 = self.t_inc.get()
+            v2 = self.t_exc.get()
+        else:
+            v1 = "Empty"
+            v2 = "Empty"
+
+        return v1, v2
+
 class Advanced_options():
     def __init__(self, master):
         self.window = Toplevel(master)
@@ -199,7 +222,4 @@ class Advanced_options():
         self.cal = DateEntry(self.date_picker, width=12, state=DISABLED)
         self.cal.grid(row=1, column=0, padx=5,pady=5)
 
-if __name__ == "__main__":
-    root = Tk()
-    app = main_screen(root)
-    root.mainloop()
+
