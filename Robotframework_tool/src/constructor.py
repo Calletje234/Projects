@@ -1,7 +1,7 @@
-from Robotframework_tool.src import Create_UI
+import Create_UI
 
 
-class construct():
+class Construct:
     def __init__(self):
         self.get_tag_options()
         self.construct_command()

@@ -1,10 +1,10 @@
 from tkinter import *
-from Robotframework_tool.src import Create_UI
+from Create_UI import MainScreen
 
 
 def start_program():
     root= Tk()
-    Create_UI.main_screen(root)
+    MainScreen(root)
     root.mainloop()
 
 start_program()

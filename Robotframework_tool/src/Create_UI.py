@@ -1,11 +1,9 @@
 from tkinter import *
 from tkinter import filedialog
 from tkcalendar import DateEntry
-from Robotframework_tool.src import constructor
+from constructor import Construct
 
-class main_screen():
-
-
+class MainScreen:
     def __init__(self, master):
         self.master = master
         self.master.title("Roboframe")
@@ -79,23 +77,23 @@ class main_screen():
         self.st_exc_checkvar = IntVar()
         
         self.tag = Checkbutton(self.options, text="Tags", variable=self.tag_checkvar,
-                                   command=lambda : self.check_tag("c_t"))
+                                   command=lambda : self.check_checkbox_tags("c_t"))
         self.tag_inc = Checkbutton(self.options, text="Include",variable=self.tag_inc_checkvar, state=DISABLED,
-                                   command=lambda : self.check_tag("c_i_t"))
+                                   command=lambda : self.check_checkbox_tags("c_i_t"))
         self.tag_exc = Checkbutton(self.options, text="Exclude",variable=self.tag_exc_checkvar, state=DISABLED,
-                                   command=lambda : self.check_tag("c_e_t"))
+                                   command=lambda : self.check_checkbox_tags("c_e_t"))
         self.tst = Checkbutton(self.options, text="Test",variable=self.tst_checkvar,
-                                   command=lambda : self.check_tag("c_tst"))
+                                   command=lambda : self.check_checkbox_tst("c_tst"))
         self.tst_inc = Checkbutton(self.options, text="Include",variable=self.tst_inc_checkvar, state=DISABLED,
-                                   command=lambda : self.check_tag("c_tst_i"))
+                                   command=lambda : self.check_checkbox_tst("c_tst_i"))
         self.tst_exc = Checkbutton(self.options, text="Exclude",variable=self.tst_exc_checkvar, state=DISABLED,
-                                   command=lambda : self.check_tag("c_tst_e"))
+                                   command=lambda : self.check_checkbox_tst("c_tst_e"))
         self.st = Checkbutton(self.options, text="Suite",variable=self.st_checkvar,
-                                  command=lambda : self.check_tag("c_s"))
+                                  command=lambda : self.check_checkbox_suite("c_s"))
         self.st_inc = Checkbutton(self.options, text="Include",variable=self.st_inc_checkvar, state=DISABLED,
-                                  command=lambda : self.check_tag("c_s_i"))
+                                  command=lambda : self.check_checkbox_suite("c_s_i"))
         self.st_exc = Checkbutton(self.options, text="Exclude",variable=self.st_exc_checkvar, state=DISABLED,
-                                  command=lambda : self.check_tag("c_s_e"))
+                                  command=lambda : self.check_checkbox_suite("c_s_e"))
 
         self.tag.grid(row=0, column=0)
         self.tag_inc.grid(row=1, column=1)
@@ -107,22 +105,8 @@ class main_screen():
         self.st_inc.grid(row=7, column=1)
         self.st_exc.grid(row=8, column=1)
 
-    def check_tag(self, type):
-        if type == "c_t" and self.tag_checkvar.get() == 1:
-            self.tag_inc.config(state=NORMAL)
-            self.tag_exc.config(state=NORMAL)
-        elif type == "c_t" and self.tag_checkvar.get() == 0:
-            self.tag_inc.config(state=DISABLED)
-            self.tag_exc.config(state=DISABLED)
-        elif type == "c_i_t" and self.tag_inc_checkvar.get() == 1:
-            self.tags_inc_ent.config(state=NORMAL)
-        elif type == "c_i_t" and self.tag_inc_checkvar.get() == 0:
-            self.tags_inc_ent.config(state=DISABLED)
-        elif type == "c_e_t" and self.tag_exc_checkvar.get() == 1:
-            self.tags_exc_ent.config(state=NORMAL)
-        elif type == "c_e_t" and self.tag_exc_checkvar.get() == 0:
-            self.tags_exc_ent.config(state=DISABLED)
-        elif type == "c_tst" and self.tst_checkvar.get() == 1:
+    def check_checkbox_tst(self, type):
+        if type == "c_tst" and self.tst_checkvar.get() == 1:
             self.tst_inc.config(state=NORMAL)
             self.tst_exc.config(state=NORMAL)
         elif type == "c_tst" and self.tst_checkvar.get() == 0:
@@ -136,7 +120,9 @@ class main_screen():
             self.tst_exc_ent.config(state=NORMAL)
         elif type == "c_tst_e" and self.tst_exc_checkvar.get() == 0:
             self.tst_exc_ent.config(state=DISABLED)
-        elif type == "c_s" and self.st_checkvar.get() == 1:
+
+    def check_checkbox_suite(self, type):
+        if type == "c_s" and self.st_checkvar.get() == 1:
             self.st_inc.config(state=NORMAL)
             self.st_exc.config(state=NORMAL)
         elif type == "c_s" and self.st_checkvar.get() == 0:
@@ -151,6 +137,22 @@ class main_screen():
         elif type == "c_s_e" and self.st_exc_checkvar.get() == 0:
             self.st_exc_ent.config(state=DISABLED)
 
+    def check_checkbox_tags(self, type):
+        if type == "c_t" and self.tag_checkvar.get() == 1:
+            self.tag_inc.config(state=NORMAL)
+            self.tag_exc.config(state=NORMAL)
+        elif type == "c_t" and self.tag_checkvar.get() == 0:
+            self.tag_inc.config(state=DISABLED)
+            self.tag_exc.config(state=DISABLED)
+        elif type == "c_i_t" and self.tag_inc_checkvar.get() == 1:
+            self.tags_inc_ent.config(state=NORMAL)
+        elif type == "c_i_t" and self.tag_inc_checkvar.get() == 0:
+            self.tags_inc_ent.config(state=DISABLED)
+        elif type == "c_e_t" and self.tag_exc_checkvar.get() == 1:
+            self.tags_exc_ent.config(state=NORMAL)
+        elif type == "c_e_t" and self.tag_exc_checkvar.get() == 0:
+            self.tags_exc_ent.config(state=DISABLED)
+     
     def filepicker(self, file):
         if file == "p":
             v = filedialog.askopenfilename(initialdir="/", title="Select file",
@@ -190,31 +192,45 @@ class Advanced_options():
 
     def create_checkboxes(self):
         self.date_checkvar = IntVar()
-        self.date_check = Checkbutton(self.top, text="Plan the run", variable=self.date_checkvar,
-                                      command=lambda : self.check_tag("date"))
+        self.own_cmd = IntVar()
+        self.cmd_check = Checkbutton(self.bottum, text="Add Own Commands", variable=self.own_cmd, 
+                                      command=lambda : self.check_own_cmd())
+        self.date_check = Checkbutton(self.top, text="Plan a run", variable=self.date_checkvar,
+                                      command=lambda : self.check_tag())
         self.date_check.grid(row=0, column=0)
+        self.cmd_check.grid(row=0, column=0)
 
     def create_frame(self):
         self.top = LabelFrame(self.window, text="Plan a Run")
-        self.bottum = LabelFrame(self.window, text="")
+        self.bottum = LabelFrame(self.window, text="Add own Commands")
         self.date_picker = LabelFrame(self.top, text="Date Picker")
         self.time = LabelFrame(self.top, text="Time Picker")
+        self.cmd = LabelFrame(self.bottum, text="Command")
 
+        self.cmd.grid(row=1, column=0, padx=10, pady=10)
         self.top.grid(row=0, column=0, padx=10)
-        self.bottum.grid(row=1, column=0)
+        self.bottum.grid(row=1, column=0, padx=10, pady=10)
         self.date_picker.grid(row=1, column=0, padx=10)
         self.time.grid(row=1, column=1, padx=10, pady=10)
 
     def create_input_fields(self):
         self.time_checkvar = IntVar()
+        self.own_command_entry = Entry(self.cmd, state=DISABLED, width=80)
         self.time_picker = Entry(self.time, state=DISABLED)
         self.time_picker.grid(row=0, column=0, padx=5, pady=5)
+        self.own_command_entry.grid(row=0, column=0, padx=5, pady=5)
 
-    def check_tag(self, tag):
-        if tag == "date" and self.date_checkvar.get() == 1:
+    def check_own_cmd(self):
+        if self.own_cmd.get() == 1:
+            self.own_command_entry.config(state=NORMAL)
+        else:
+            self.own_command_entry.config(state=DISABLED)
+
+    def check_tag(self):
+        if self.date_checkvar.get() == 1:
             self.cal.config(state=NORMAL)
             self.time_picker.config(state=NORMAL)
-        elif tag == "date" and self.date_checkvar.get() == 0:
+        elif self.date_checkvar.get() == 0:
             self.cal.config(state=DISABLED)
             self.time_picker.config(state=DISABLED)
 
