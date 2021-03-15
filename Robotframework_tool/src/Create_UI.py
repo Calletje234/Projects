@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 from tkcalendar import DateEntry
-from constructor import Construct
+from Roboframe import Construct
 
 class MainScreen:
     def __init__(self, master):
@@ -54,8 +54,8 @@ class MainScreen:
                                          command=lambda: self.filepicker("p"))
         self.change_robot_bttn = Button(self.set_paths, text="...", height=1, width=2,
                                         command=lambda: self.filepicker("r"))
-        self.cancel = Button(self.buttons, text="Cancel", width=10, command=lambda : root.destroy())
-        self.run = Button(self.buttons, text="Run", width=10, command=lambda : constructor.construct())
+        self.cancel = Button(self.buttons, text="Cancel", width=10, command=lambda : self.master.destroy())
+        self.run = Button(self.buttons, text="Run", width=10, command=lambda : Construct(self.master))
         self.advanced = Button(self.buttons, text="Advanced", width=10,
                                command=lambda : Advanced_options(self.master))
 
@@ -193,23 +193,34 @@ class Advanced_options():
     def create_checkboxes(self):
         self.date_checkvar = IntVar()
         self.own_cmd = IntVar()
-        self.cmd_check = Checkbutton(self.bottum, text="Add Own Commands", variable=self.own_cmd, 
+        self.add_chechvar = IntVar()
+
+        self.add_var = Checkbutton(self.bottum, text="Add variables", variable=self.add_chechvar, 
+                                      command=lambda : self.check_add_var())
+        self.cmd_check = Checkbutton(self.middel, text="Add Own Commands", variable=self.own_cmd, 
                                       command=lambda : self.check_own_cmd())
         self.date_check = Checkbutton(self.top, text="Plan a run", variable=self.date_checkvar,
                                       command=lambda : self.check_tag())
         self.date_check.grid(row=0, column=0)
         self.cmd_check.grid(row=0, column=0)
+        self.add_var.grid(row=0, column=0)
 
     def create_frame(self):
         self.top = LabelFrame(self.window, text="Plan a Run")
-        self.bottum = LabelFrame(self.window, text="Add own Commands")
+        self.middel = LabelFrame(self.window, text="Add own Commands")
         self.date_picker = LabelFrame(self.top, text="Date Picker")
+        self.bottum = LabelFrame(self.window, text="Variables")
+        self.enter_var_name = LabelFrame(self.bottum, text="Add Variable Name")
+        self.enter_var_value = LabelFrame(self.bottum, text="Add Variable Value")
         self.time = LabelFrame(self.top, text="Time Picker")
-        self.cmd = LabelFrame(self.bottum, text="Command")
+        self.cmd = LabelFrame(self.middel, text="Command")
 
+        self.enter_var_value.grid(row=1, column=0, padx=10, pady=10)
+        self.enter_var_name.grid(row=1, column=1, padx=10, pady=10)
+        self.bottum.grid(row=2, column=0, padx=10, pady=10)
         self.cmd.grid(row=1, column=0, padx=10, pady=10)
         self.top.grid(row=0, column=0, padx=10)
-        self.bottum.grid(row=1, column=0, padx=10, pady=10)
+        self.middel.grid(row=1, column=0, padx=10, pady=10)
         self.date_picker.grid(row=1, column=0, padx=10)
         self.time.grid(row=1, column=1, padx=10, pady=10)
 
@@ -217,8 +228,21 @@ class Advanced_options():
         self.time_checkvar = IntVar()
         self.own_command_entry = Entry(self.cmd, state=DISABLED, width=80)
         self.time_picker = Entry(self.time, state=DISABLED)
+        self.add_own_vars_name = Entry(self.enter_var_name, state=DISABLED, width=40)
+        self.add_own_vars_key = Entry(self.enter_var_value, state=DISABLED, width=40)
+
         self.time_picker.grid(row=0, column=0, padx=5, pady=5)
         self.own_command_entry.grid(row=0, column=0, padx=5, pady=5)
+        self.add_own_vars_key.grid(row=0, column=0, padx=5, pady=5)
+        self.add_own_vars_name.grid(row=0, column=0, padx=5, pady=5)
+    
+    def check_add_var(self):
+        if self.add_chechvar.get() == 1:
+            self.add_own_vars_name.config(state=NORMAL)
+            self.add_own_vars_key.config(state=NORMAL)
+        else:
+            self.add_own_vars_name.config(state=DISABLED)
+            self.add_own_vars_key.config(state=DISABLED)
 
     def check_own_cmd(self):
         if self.own_cmd.get() == 1:
