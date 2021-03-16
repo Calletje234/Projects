@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 from tkcalendar import DateEntry
-from Roboframe import Construct
+
 
 class MainScreen:
     def __init__(self, master):
@@ -182,41 +182,39 @@ class MainScreen:
 
 class Advanced_options():
     def __init__(self, master):
+        self.master = master
         self.window = Toplevel(master)
         self.window.title("Advanced_options")
         self.window.geometry("650x650")
         self.create_frame()
+        self.create_buttons()
         self.create_date_picker()
         self.create_checkboxes()
         self.create_input_fields()
 
+    def create_buttons(self):
+        self.add_var = Button(self.bottum, text="Add", command=lambda : AddVar(self.master))
+        self.add_var.grid(row=0, column=0, padx=10, pady=10)
+
     def create_checkboxes(self):
         self.date_checkvar = IntVar()
         self.own_cmd = IntVar()
-        self.add_chechvar = IntVar()
 
-        self.add_var = Checkbutton(self.bottum, text="Add variables", variable=self.add_chechvar, 
-                                      command=lambda : self.check_add_var())
         self.cmd_check = Checkbutton(self.middel, text="Add Own Commands", variable=self.own_cmd, 
                                       command=lambda : self.check_own_cmd())
         self.date_check = Checkbutton(self.top, text="Plan a run", variable=self.date_checkvar,
                                       command=lambda : self.check_tag())
         self.date_check.grid(row=0, column=0)
         self.cmd_check.grid(row=0, column=0)
-        self.add_var.grid(row=0, column=0)
 
     def create_frame(self):
         self.top = LabelFrame(self.window, text="Plan a Run")
         self.middel = LabelFrame(self.window, text="Add own Commands")
         self.date_picker = LabelFrame(self.top, text="Date Picker")
         self.bottum = LabelFrame(self.window, text="Variables")
-        self.enter_var_name = LabelFrame(self.bottum, text="Add Variable Name")
-        self.enter_var_value = LabelFrame(self.bottum, text="Add Variable Value")
         self.time = LabelFrame(self.top, text="Time Picker")
         self.cmd = LabelFrame(self.middel, text="Command")
 
-        self.enter_var_value.grid(row=1, column=0, padx=10, pady=10)
-        self.enter_var_name.grid(row=1, column=1, padx=10, pady=10)
         self.bottum.grid(row=2, column=0, padx=10, pady=10)
         self.cmd.grid(row=1, column=0, padx=10, pady=10)
         self.top.grid(row=0, column=0, padx=10)
@@ -228,13 +226,9 @@ class Advanced_options():
         self.time_checkvar = IntVar()
         self.own_command_entry = Entry(self.cmd, state=DISABLED, width=80)
         self.time_picker = Entry(self.time, state=DISABLED)
-        self.add_own_vars_name = Entry(self.enter_var_name, state=DISABLED, width=40)
-        self.add_own_vars_key = Entry(self.enter_var_value, state=DISABLED, width=40)
 
         self.time_picker.grid(row=0, column=0, padx=5, pady=5)
         self.own_command_entry.grid(row=0, column=0, padx=5, pady=5)
-        self.add_own_vars_key.grid(row=0, column=0, padx=5, pady=5)
-        self.add_own_vars_name.grid(row=0, column=0, padx=5, pady=5)
     
     def check_add_var(self):
         if self.add_chechvar.get() == 1:
@@ -261,5 +255,41 @@ class Advanced_options():
     def create_date_picker(self):
         self.cal = DateEntry(self.date_picker, width=12, state=DISABLED)
         self.cal.grid(row=1, column=0, padx=5,pady=5)
+
+class AddVar:
+    def __init__(self, mainFrame):
+        self.master = mainFrame
+        self.var_window = Toplevel(mainFrame)
+        self.var_window.geometry("350x150")
+        self.var_window.title("Add Variable")
+        self.add_frames()
+        self.add_entry()
+        self.add_buttons()
+
+    def add_buttons(self):
+        self.add = Button(self.bottum, text="Add")
+
+        self.add.grid(row=0, column=0)
+
+    def add_frames(self):
+        self.top = LabelFrame(self.var_window, text="Variable Values")
+        self.bottum = Frame(self.var_window)
+        self.add_name = LabelFrame(self.top, text="Variable Name")
+        self.add_val = LabelFrame(self.top, text="Variable Value")
+        
+        self.bottum.grid(row=1, column=0)
+        self.top.grid(row=0, column=0, padx=10)
+        self.add_name.grid(row=0, column=0, padx=10, pady=10)
+        self.add_val.grid(row=0, column=1, padx=10, pady=10)
+
+    def add_entry(self):
+        self.add_var_name_value = StringVar(self.add_name)
+        self.add_var_key_value = StringVar(self.add_val)
+        self.add_var_name = Entry(self.add_name, textvariable=self.add_var_name_value)
+        self.add_var_value = Entry(self.add_val, textvariable=self.add_var_key_value)
+
+        self.add_var_name.grid(row=0, column=0, padx=5, pady=5)
+        self.add_var_value.grid(row=0, column=0, padx=5, pady=5)
+        
 
 
