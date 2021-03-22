@@ -4,6 +4,7 @@ from tkcalendar import DateEntry
 
 
 class MainScreen:
+    
     def __init__(self, master):
         self.master = master
         self.master.title("Roboframe")
@@ -180,7 +181,9 @@ class MainScreen:
 
         return v1, v2
 
-class Advanced_options():
+class Advanced_options:
+    lable_row = 0
+    lable_row = int(lable_row) 
     def __init__(self, master):
         self.master = master
         self.window = Toplevel(master)
@@ -222,6 +225,13 @@ class Advanced_options():
         self.date_picker.grid(row=1, column=0, padx=10)
         self.time.grid(row=1, column=1, padx=10, pady=10)
 
+    def add_var_label(self, key, value):
+        self.label_key = Label(self.master, text=f"{key}")
+        self.label_value = Label(self.master, text=f"{value}")
+
+        self.label_key.grid(row=0, column=0)
+        self.label_value.grid(row=0, column=1)
+
     def create_input_fields(self):
         self.time_checkvar = IntVar()
         self.own_command_entry = Entry(self.cmd, state=DISABLED, width=80)
@@ -229,14 +239,6 @@ class Advanced_options():
 
         self.time_picker.grid(row=0, column=0, padx=5, pady=5)
         self.own_command_entry.grid(row=0, column=0, padx=5, pady=5)
-    
-    def check_add_var(self):
-        if self.add_chechvar.get() == 1:
-            self.add_own_vars_name.config(state=NORMAL)
-            self.add_own_vars_key.config(state=NORMAL)
-        else:
-            self.add_own_vars_name.config(state=DISABLED)
-            self.add_own_vars_key.config(state=DISABLED)
 
     def check_own_cmd(self):
         if self.own_cmd.get() == 1:
@@ -257,6 +259,7 @@ class Advanced_options():
         self.cal.grid(row=1, column=0, padx=5,pady=5)
 
 class AddVar:
+    master = Advanced_options
     def __init__(self, mainFrame):
         self.master = mainFrame
         self.var_window = Toplevel(mainFrame)
@@ -266,8 +269,13 @@ class AddVar:
         self.add_entry()
         self.add_buttons()
 
+    def add_vars(self):
+        key = self.add_var_name_value.get()
+        value = self.add_var_key_value.get()
+        Advanced_options.add_var_label(self.master, key, value)
+
     def add_buttons(self):
-        self.add = Button(self.bottum, text="Add")
+        self.add = Button(self.bottum, text="Add", command=lambda : self.add_vars())
 
         self.add.grid(row=0, column=0)
 
