@@ -196,8 +196,8 @@ class Advanced_options:
         self.create_input_fields()
 
     def create_buttons(self):
-        self.add_var = Button(self.bottum, text="Add", command=lambda : AddVar(self.master))
-        self.add_var.grid(row=0, column=0, padx=10, pady=10)
+        self.add_var = Button(self.bottum, text="Add", command=lambda : self.add_var_screen())
+        self.add_var.grid(row=1, column=0, padx=10, pady=10)
 
     def create_checkboxes(self):
         self.date_checkvar = IntVar()
@@ -226,8 +226,8 @@ class Advanced_options:
         self.time.grid(row=1, column=1, padx=10, pady=10)
 
     def add_var_label(self, key, value):
-        self.label_key = Label(self.master, text=f"{key}")
-        self.label_value = Label(self.master, text=f"{value}")
+        self.label_key = Label(self.bottum, text=f"{key}")
+        self.label_value = Label(self.bottum, text=f"{value}")
 
         self.label_key.grid(row=0, column=0)
         self.label_value.grid(row=0, column=1)
@@ -258,28 +258,15 @@ class Advanced_options:
         self.cal = DateEntry(self.date_picker, width=12, state=DISABLED)
         self.cal.grid(row=1, column=0, padx=5,pady=5)
 
-class AddVar:
-    master = Advanced_options
-    def __init__(self, mainFrame):
-        self.master = mainFrame
-        self.var_window = Toplevel(mainFrame)
+    def add_var_screen(self):
+        self.var_window = Toplevel(self.master)
         self.var_window.geometry("350x150")
         self.var_window.title("Add Variable")
-        self.add_frames()
-        self.add_entry()
-        self.add_buttons()
+        self.add_var_frame()
+        self.add_var_entry()
+        self.add_var_button()
 
-    def add_vars(self):
-        key = self.add_var_name_value.get()
-        value = self.add_var_key_value.get()
-        Advanced_options.add_var_label(self.master, key, value)
-
-    def add_buttons(self):
-        self.add = Button(self.bottum, text="Add", command=lambda : self.add_vars())
-
-        self.add.grid(row=0, column=0)
-
-    def add_frames(self):
+    def add_var_frame(self):
         self.top = LabelFrame(self.var_window, text="Variable Values")
         self.bottum = Frame(self.var_window)
         self.add_name = LabelFrame(self.top, text="Variable Name")
@@ -289,8 +276,8 @@ class AddVar:
         self.top.grid(row=0, column=0, padx=10)
         self.add_name.grid(row=0, column=0, padx=10, pady=10)
         self.add_val.grid(row=0, column=1, padx=10, pady=10)
-
-    def add_entry(self):
+    
+    def add_var_entry(self):
         self.add_var_name_value = StringVar(self.add_name)
         self.add_var_key_value = StringVar(self.add_val)
         self.add_var_name = Entry(self.add_name, textvariable=self.add_var_name_value)
@@ -298,6 +285,16 @@ class AddVar:
 
         self.add_var_name.grid(row=0, column=0, padx=5, pady=5)
         self.add_var_value.grid(row=0, column=0, padx=5, pady=5)
-        
+
+    def add_var_button(self):
+        self.add = Button(self.bottum, text="Add", command=lambda : self.add_vars())
+        self.add.grid(row=0, column=0)
+
+    def add_vars(self):
+        key = self.add_var_name_value.get()
+        value = self.add_var_key_value.get()
+        self.add_var_label(key, value)
+
+
 
 
