@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import filedialog
-from tkcalendar import DateEntry
 
 
 class MainScreen:
