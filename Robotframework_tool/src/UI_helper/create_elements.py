@@ -15,8 +15,8 @@ class CreateElement:
 
         return entry_object
 
-    def create_lable(self, frame_name, lable_name):
-        lable_object = Label(frame_name, text=lable_name)
+    def create_lable(self, frame_name, lable_name, text_color='#000'):
+        lable_object = Label(frame_name, text=lable_name, fg=text_color)
         return lable_object
 
     def create_checkbox(self, frame_name, label_text, variable_type, state_value=NORMAL):
